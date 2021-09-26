@@ -34,7 +34,7 @@ import poly.util.KakaoClass;
 public class kakaoService implements IKakaoService{
 	private Logger log = Logger.getLogger(getClass());
 	//--------------------------------------------------------------------------리다이렉트 주소, key 전역 변수--------------------------------------------------------------
-	//String Redirect_URI = "http://www.detectiongas.com/kakaoLogin.do"; // 실제 서버에 올릴 때는 이 주소 사용
+	// String Redirect_URI = "http://www.detectiongas.com/kakaoLogin.do"; // 실제 서버에 올릴 때는 이 주소 사용
 	private final String Redirect_URI = "http://localhost:8080/kakaoLogin.do"; // 로컬 테스트용
 	private final String RESTAPI_KEY = "27c978dd34db046ade506b3d1fb46013"; // RESTAPI_KEY 키
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------

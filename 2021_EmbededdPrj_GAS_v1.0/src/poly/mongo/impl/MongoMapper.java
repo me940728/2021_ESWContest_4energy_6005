@@ -103,8 +103,8 @@ public class MongoMapper implements IMongoMapper {
 				mDTO.setDate(CmmUtil.nvl(current.get("MAX(date)").toString()));
 				mDTO.setSENSOR_NUMBER(CmmUtil.nvl(current.get("SENSOR_NUMBER").toString()));
 				rList.add(mDTO);
-				log.info(mDTO.getDate());
-				log.info(mDTO.getSENSOR_NUMBER());
+				// log.info(mDTO.getDate());
+				// log.info(mDTO.getSENSOR_NUMBER());
 				mDTO = null;
 			}
 		} catch (MongoException e) {
@@ -130,19 +130,19 @@ public class MongoMapper implements IMongoMapper {
 		//---------------------------------데이터 key value 매핑---------------------------------------
 		for (MongoDTO e : pList) {
 			sensorMap.put(e.getSENSOR_NUMBER(), e.getDate());
-			log.info(sensorMap.get(e.getSENSOR_NUMBER()) + "Num : " + e.getSENSOR_NUMBER());
+			//log.info(sensorMap.get(e.getSENSOR_NUMBER()) + "Num : " + e.getSENSOR_NUMBER());
 		}
 		try {
 			int sNum = 1;
 			Iterator<MongoDTO> it = pList.iterator();
 			while (it.hasNext()) {
-				log.info(it.next());
+				//log.info(it.next());
 				query = new BasicDBObject();
 				String str = sNum + ""; // 형변환
 				query.put("date", sensorMap.get(str));
-				log.info("sensorMap.get((char) sNum) : " + sensorMap.get(str));
+				//log.info("sensorMap.get((char) sNum) : " + sensorMap.get(str));
 				query.put("SENSOR_NUMBER", sNum+"");
-				log.info("(char) sNum) : " + sNum);
+				//log.info("(char) sNum) : " + sNum);
 				sNum++;
 
 				projection = new BasicDBObject();
@@ -163,6 +163,7 @@ public class MongoMapper implements IMongoMapper {
 					
 					log.info("mongDTO.getSENSOR_NUMBER : " + mongDTO.getSENSOR_NUMBER());
 					log.info("mongDTO.getSENSOR_DATA: " + mongDTO.getSENSOR_DATA());
+					log.info("topic : " + "hardwareCon" + "message : " + "1");
 					mongoData.add(mongDTO);
 					
 					mongDTO = null;

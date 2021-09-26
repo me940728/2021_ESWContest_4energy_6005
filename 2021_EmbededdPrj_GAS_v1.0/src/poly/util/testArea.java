@@ -24,7 +24,11 @@ public class testArea {
 	//---------------------------------------------------------------------------------
 	//---------------------------------------메인메서드부------------------------------
 	public static void main(String[] args) {
-
+		String acc = "R91p3gxnhe5bNW3Be1Gf6m9K-uusXVe_yNhuDwopyNgAAAF8G4zJtQ";		
+		KakaoClass kc = new KakaoClass();
+		kc.sendMyKakaoTalk(acc, "1번 센서에서 많은 양의 가스가 탐지되었습니다.", "/");
+		
+		System.out.print("topic : " + "hardwareCon" + "message : " + "1");
 	}
 
 }

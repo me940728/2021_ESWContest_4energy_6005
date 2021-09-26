@@ -18,10 +18,10 @@ public class MqttSub {
 
 	public static void main(String[] args) {
 		//----------------------------------------------MQTT 셋팅부------------------------------------
-		String mqttServer = "tcp://13.125.190.107:1883"; //브로커 주소
+		String mqttServer = "{  }"; //브로커 주소
 		String client_id = "admin"; // 이름
-		String userName = "admin"; // 아이디
-		String pasword = "1234"; // 비번
+		String userName = "{  }"; // 아이디
+		String pasword = "{  }"; // 비번
 		String topic = "test"; // 토픽
 		//----------------------------------------------------------------------------------------------
 		 final Consumer<HashMap<Object, Object>> pdk = (arg)->{  //해쉬맵을 받는 함수를 정의하자.

@@ -2,6 +2,7 @@ package poly.controller;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -44,6 +45,19 @@ public class UserController {
 	@Resource(name ="MongoMapper") // => 몽고 사용 관련
 	private IMongoMapper mongoMapper;
 	//---------------------------------------------------------------------------------------------------------------------------
+	//-----------------------------------------------세션을 체크하여 권한이 있는지 확인-------------------------------------------
+	@RequestMapping(value = "user/sessioCheck")
+	public String userSessionCheck(HttpServletRequest request, HttpServletResponse response, Model model) {
+		log.info(this.getClass() + "---------------------------------session null Start--------------------------------------");
+		String msg = "로그인을 해주세요";
+		String url = "/user/userLogin.do";
+		log.info("url : " + url);
+		log.info("msg : " + msg);
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		log.info(this.getClass() + "----------------------------------------session null end!!-------------------------------");
+		return "/user/redirect";
+	}
 	//-----------------------------------------------------인덱스 페이지 리턴----------------------------------------------------
 	@RequestMapping(value="index") // 현재는 테스트용으로 사용된다.
 	public String Index() throws Exception{
@@ -54,15 +68,15 @@ public class UserController {
 	//----------------------------------------------------로그인페이지 보여주는 매핑----------------------------------------------
 	@RequestMapping(value="user/userLogin")
 	public String userLogin(HttpServletRequest request, ModelMap model) throws Exception{
-		log.info(this.getClass() + "----------------------------------------user/userLogin start!!-------------");
-		log.info(this.getClass() + "--------------------------------------------user/userLogin end!!-----------");
+		log.info(this.getClass() + "----------------------------------------user/userLogin start!!------------------------------");
+		log.info(this.getClass() + "--------------------------------------------user/userLogin end!!----------------------------");
 		return "/user/userLogin";
 	}
 	//------------------------------------------ID와 Password를 매개로 받아 로그인(권한부여) 기능을 매핑-------------------------
 	@SuppressWarnings("unused")
 	@RequestMapping(value="user/userLoginProc")
 	public String userLoginProc(HttpServletRequest request, ModelMap model, HttpSession session) throws Exception{
-		log.info(this.getClass() + "-------------------------user/userLoginProc start!!--------------------------");
+		log.info(this.getClass() + "--------------------------------user/userLoginProc start!!----------------------------------");
 		String empno = CmmUtil.nvl(request.getParameter("empno"));
 		log.info("empno: " + empno);
 		String pwd = CmmUtil.nvl(EncryptUtil.encHashSHA256(request.getParameter("pwd")));	
@@ -77,21 +91,6 @@ public class UserController {
 		uDTO = userService.getLoginInfo(uDTO); 
 		uDTO.setEmpno(empno); 
 		uDTO.setPwd(pwd); 
-		//--------------------------------------------------몽고 관련 로직-(Test용)----------------------------------------------
-		/*
-		 * log.
-		 * info("--------------------------Mongo Data Get Processs START-----------------------------"
-		 * ); List<MongoDTO> dailySensor = new ArrayList<MongoDTO>(); dailySensor =
-		 * mongoMapper.getDailySensorData(); // => 최근에 들어온 센서 정보를 가져옴 // 데이터 확인
-		 * for(MongoDTO e : dailySensor) { log.info(e.getDate());
-		 * log.info(e.getSENSOR_NUMBER()); log.info(e.getSENSOR_DATA()); } //<최근 센서 정보에
-		 * 해당하는 센서 데이터 가져오기> List<MongoDTO> sensorDataMatch = new ArrayList<MongoDTO>();
-		 * sensorDataMatch = mongoMapper.getSensorDataMatch(dailySensor); // => WHERE되는
-		 * 센서 정보 가져옴 // 데이터 확인 for(MongoDTO e : sensorDataMatch) {
-		 * log.info(e.getSENSOR_NUMBER()); log.info(e.getSENSOR_DATA()); } log.
-		 * info("--------------------------Mongo Data Get Processs END----------------------------"
-		 * );
-		 */
 		//---------------------------------------------로그인 성공 유무에 따른 메시지와 경로 리턴 로직---------------------------
 		String msg = "";
 		String url = "";
@@ -111,16 +110,14 @@ public class UserController {
 		}
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
-		// model.addAttribute("sensorDataList", sensorDataMatch); // => 첫 화면 로드될 시 값 초기화
-		session.setAttribute("id", uDTO.getEmpno());
-		session.setAttribute("name", uDTO.getName());
-		log.info(this.getClass() + "-------------------------user/userLoginProc END!!--------------------------");
+
+		log.info(this.getClass() + "---------------------------------------user/userLoginProc END!!---------------------------------");
 		return "/user/redirect";
 	}
 	//---------------------------------------------------------로그아웃 메서드---------------------------------------------------------
 	@RequestMapping(value="user/logOut.do")
 	public String logOut(HttpSession session, Model model) throws Exception{
-		log.info(this.getClass() + "-------------------------user/logOut start!!---------------------------------");
+		log.info(this.getClass() + "---------------------------------------user/logOut start!!--------------------------------------");
 		String msg = "";
 		String url = "";
 		String accessToken = (String) session.getAttribute("kakaoToken"); // => 세션에서 엑세스토큰을 가져온다.
@@ -142,7 +139,7 @@ public class UserController {
 			msg = "로그아웃 실패";
 			url = "/";
 		}
-		log.info(this.getClass() + "----------------------------user/loginOut end!!----------------------------");
+		log.info(this.getClass() + "-------------------------------------------user/loginOut end!!-----------------------------------");
 		return "/user/redirect";
 	}
 	
@@ -155,22 +152,22 @@ public class UserController {
 	//------------------------------------------------로그인 성공 후 메인 페이지 보여주는 메서드----------------------------------------
 	@RequestMapping(value="main/index")
 	public String mainIndex(HttpServletRequest request, ModelMap model) throws Exception{
-		log.info(this.getClass() + "-----------------------------main/mainPage start!!-----------------------------");
-		log.info(this.getClass() + "---------------------------------main/mainPage end!!---------------------------");
+		log.info(this.getClass() + "---------------------------------------main/mainPage start!!---------------------------------------");
+		log.info(this.getClass() + "------------------------------------------main/mainPage end!!--------------------------------------");
 		return "/main/index"; 
 	}
 	//로그인 시 유저 정보 확인을 위한 아작스 처리 로직
 	@RequestMapping(value = "user/loginEmpnoCheck")
 	@ResponseBody
 	public int userLoginEmpnoCheck(HttpServletRequest request, ModelMap model) throws Exception {
-		log.info(this.getClass().getName() + "--------------------------user/loginEmailCheck Start!!----------------");
+		log.info(this.getClass().getName() + "-------------------------------------user/loginEmailCheck Start!!----------------------");
 		String empno = CmmUtil.nvl(request.getParameter("empno"));
 		log.info("empno : " + empno);
 
 		int res = userService.getEmpnoCheck(empno);
 		log.info("res : " + res); //res 값을 확인
 
-		log.info(this.getClass().getName() + "---------------------user/loginEmailCheck End!!----------------");
+		log.info(this.getClass().getName() + "-------------------------------user/loginEmailCheck End!!--------------------------------");
 		return res;
 	}
 	//------------------------------------------비밀번호 찾기 보여주는 페이지----------------------------------------------------------

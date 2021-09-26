@@ -1,29 +1,34 @@
+/* @Auth 최별규
+ @Version 1.1
+ 사용자 정의 js, 몽고에서 데이터를 가져와서 모달을 처리 하기 위한 동적처리를 정의해 놓은 js
+   __________________________________________________________________________________________________________________________
+   |   시기    |   작성일     |   작성자    |                                     내용                                      |
+   |-------------------------------------------------------------------------------------------------------------------------
+   | 최초 작성 | 2021.09.14   |  최별규     |  초안 작성
+   | 중간 수정 | 2021.09.15   |  최별규     |  최종 완성(콜백 부분 반드시!!프로미스나 async로 업데이트하기!!)
+   | 최종 완료 | 2021.09.24   |  김하윤     |  initModal 코드 리팩토링
+   --------------------------------------------------------------------------------------------------------------------------
+*/ // => 차트 처리 담당 JS
 'use strict'
-
-
-//----------------------------전체 센서 그래프 보여주는 JS----------------------------------------------
+//------------------------------------
+						var visits = 399; // => 1번 센서
+						var views = 370;  // => 2번 센서
+						var hits = 388;   // => 3번 센서
+//------------------------------------
+//----------------------------전체 센서 그래프 보여주는 JS---------------------------------------------\
 am4core
 				.ready(function() {
-
 					// Themes begin
 					am4core.useTheme(am4themes_animated);
-					// Themes end
-
 					// Create chart instance
 					var chart = am4core.create("chartdiv", am4charts.XYChart);
-
-					//
-
 					// Increase contrast by taking evey second color
 					chart.colors.step = 2;
-
 					// Add data
 					chart.data = generateChartData();
-
 					// Create axes
 					var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 					dateAxis.renderer.minGridDistance = 50;
-
 					// Create series
 					function createAxisAndSeries(field, name, opposite, bullet) {
 						var valueAxis = chart.yAxes
@@ -31,7 +36,6 @@ am4core
 						if (chart.yAxes.indexOf(valueAxis) != 0) {
 							valueAxis.syncWithAxis = chart.yAxes.getIndex(0);
 						}
-
 						var series = chart.series
 								.push(new am4charts.LineSeries());
 						series.dataFields.valueY = field;
@@ -93,46 +97,38 @@ am4core
 						valueAxis.renderer.labels.template.fill = series.stroke;
 						valueAxis.renderer.opposite = opposite;
 					}
+					//-------------------------------------------------------------
 								// 인자 : (이름, 표시할 이름, ? ,  차트 표현 모양)
 					createAxisAndSeries("visits", "센서1", false, "circle");
 					createAxisAndSeries("views", "센서2", true, "triangle");
 					createAxisAndSeries("hits", "센서3", true, "rectangle");
-
+					//-------------------------------------------------------------
 					// Add legend
 					chart.legend = new am4charts.Legend();
-
 					// Add cursor
 					chart.cursor = new am4charts.XYCursor();
-
-					// 랜덤 데이터 생성
-					function generateChartData() {
+					// ------------------------------------------------ 차트 데이터 생성---------------------------------------------------------------
+					function generateChartData() { // => Param 형식 : {"1" : data, "2" : data, "3" : data}
+						// console.log("sensorData : " + sensorData); 
 						var chartData = [];
-						var firstDate = new Date();
-						firstDate.setDate(firstDate.getDate() - 100);
-						firstDate.setHours(0, 0, 0, 0);
-
-						var visits = 1000;
-						var hits = 1000;
-						var views = 1000;
-						
-						// 임의 값 생성
+						var firstDate = new Date(); // => 날짜 생성 객체 선언
+						//firstDate.setDate(firstDate.getDate()); // => 일 별로 적용 시킬 때 사용
+						firstDate.setHours(firstDate.getHours(), firstDate.getMinutes() - 20, 0, 0); // => p1: 현재 시간, p2: 현재 분, p3:0초, p4: 0밀리초
+						//----------------------------------------------------- 센서 초기 값------------------------------------------------------------
+						// var visits = 1000; // => 1번 센서
+						// var views = 1000;  // => 2번 센서
+						// var hits = 1000;   // => 3번 센서
+						//------------------------------------------------------------------------------------------------------------------------------
 						for (var i = 0; i < 15; i++) {
-							// we create date objects here. In your data, you can have date strings
-							// and then set format of your dates using chart.dataDateFormat property,
-							// however when possible, use date objects, as this will speed up chart rendering.
-							var newDate = new Date(firstDate);
-							//--------------------------------------------------------------------------------------------------------
-							// 센서 값 넣는 곳
-							newDate.setDate(newDate.getDate() + i);
-
-							visits += Math.round((Math.random() < 0.5 ? 1 : -1)
-									
-									* Math.random() * 10);
-							hits += Math.round((Math.random() < 0.5 ? 1 : -1)
-									* Math.random() * 10);
-							views += Math.round((Math.random() < 0.5 ? 1 : -1)
-									* Math.random() * 10);
-							//--------------------------------------------------------------------------------------------------------
+							var newDate = new Date(firstDate); // => 차트 하단 부 날짜 선언 부
+							//--------------------------------------------------------------------------------------------------------------------------
+							//newDate.setDate(newDate.getDate() + i); // => 일 별로 적용 시킬 때 사용
+							newDate.setHours(newDate.getHours(), newDate.getMinutes() + i, 0, 0);
+							//----------------------------------------------센서 Data 넣는 구간---------------------------------------------------------
+							visits += 2;
+							hits += 2;
+							views += 2;
+							//--------------------------------------------------------------------------------------------------------------------------
 							chartData.push({
 								date : newDate,
 								visits : visits,
@@ -142,9 +138,7 @@ am4core
 						}
 						return chartData;
 					}
-
 				}); // end am4core.ready()
-				
 //-------------------------------------------------센서1 차트 JS--------------------------------------------------------------------
 	am4core.ready(function() {
 

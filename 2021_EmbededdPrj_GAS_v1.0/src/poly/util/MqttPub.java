@@ -21,7 +21,7 @@ public class MqttPub {
 	
 	public static void mqttPub(String username, String password, String topic, String content) {
         int qos = 0;
-        String broker = "tcp://13.125.190.107:1883";
+        String broker = "{ }"; // => tcp://ip:1883
         String clientId = "JavaSample";
         MemoryPersistence persistence = new MemoryPersistence();
         
@@ -44,7 +44,7 @@ public class MqttPub {
             
             sampleClient.disconnect();
             System.out.println("Disconnected");
-            System.exit(0);
+			/* System.exit(0); */
         } catch(MqttException me) {
             System.out.println("reason "+me.getReasonCode());
             System.out.println("msg "+me.getMessage());

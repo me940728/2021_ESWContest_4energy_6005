@@ -4,13 +4,17 @@
 <%@page import="poly.dto.MongoDTO" %>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-
 <!-- 모달 인클루드 -->
 <%@ include file="/WEB-INF/view/main/modal.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
     <%
     	String userName = CmmUtil.nvl((String)session.getAttribute("name"));
-    	// List<MongoDTO> initSensorData = (List<MongoDTO>)request.getAttribute("sensorDataList");
+    %>
+    <%
+    // => 로그인 성공 후 세션에 추가되는 id가 없으면 해당 url을 리턴한다.
+    if(userName == null){
+    	response.sendRedirect("/user/sessioCheck.do");	
+    }
     %>    
 <html>
 <head>
@@ -456,16 +460,6 @@
 	<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 	<!-- Chart code -->
 	<script src="/resources/js/customJs/chartScript.js"></script>
-<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Fan 동작 스크립트  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
-	<script type="text/javascript">
-    function changeFan(index) { 
-    	if(index==1) {
-    		document.getElementById("fanImg").src = "/resources/img/stopped-fan.gif";
-    	} else if(index==2) {
-    		document.getElementById("fanImg").src = "/resources/img/fan.jpg";
-    	}
-    }
-	</script>
 <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    JavaScript 영역    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  -->
 </body>
 </html>

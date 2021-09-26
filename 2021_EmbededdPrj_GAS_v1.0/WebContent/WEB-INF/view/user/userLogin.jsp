@@ -21,34 +21,34 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4"><img src="/resources/image/Logo.png" style="width:40px"> GASGASGAS</h1>
                                     </div>
-                                    <form class="user" action="/user/userLoginProc.do">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="empno" name ='empno' aria-describedby="emailHelp"
-                                                placeholder="사원번호를 입력하세요.">
-                                        </div>
-                                        <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@직원 등록 여부 확인띄워주는 스팟@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
-                                        <div id='empno_check'></div>
-                                        <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
-                                        <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="pwd" name='pwd' placeholder="비밀번호를 입력하세요.">
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                      <!--  <label class="custom-control-label" for="customCheck">아이디 기억하기</label> -->
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-primary btn-user btn-block" id="loginSubmit" >로그인</button>
-                                        <!-- 카카오 로그인 kakaoLoginProc-->
-                                  		<button type="button" 
-                                      		class="btn btn-primary1 btn-user btn-block" value="카카오로그인" onclick="location.href='/kakaoLoginProc.do'" style="background-color:#F8DF00;  
-                                      		 padding-top: 3px; padding-bottom: 3px;">
-                                      		<img src="/resources/image/kakao.png" style="width:40px">
-                                  		     카카오로그인     	
-                                       </button> 
-                                    </form>
+	                                    <form class="user" action="/user/userLoginProc.do" name="formTag" onsubmit="return doLoginCheck(this);">
+	                                        <div class="form-group">
+	                                            <input type="text" class="form-control form-control-user"
+	                                                id="empno" name ='empno' aria-describedby="emailHelp"
+	                                                placeholder="사원번호를 입력하세요.">
+	                                        </div>
+	                                        <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@직원 등록 여부 확인띄워주는 스팟@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+	                                        <div id='empno_check'></div>
+	                                        <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+	                                        <div class="form-group">
+	                                            <input type="password" class="form-control form-control-user"
+	                                                id="pwd" name='pwd' placeholder="비밀번호를 입력하세요.">
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <div class="custom-control custom-checkbox small">
+	                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+	                                      <!--  <label class="custom-control-label" for="customCheck">아이디 기억하기</label> -->
+	                                            </div>
+	                                        </div>
+	                                        <button class="btn btn-primary btn-user btn-block" id="loginSubmit" >로그인</button>
+	                                        <!-- 카카오 로그인 kakaoLoginProc-->
+	                                  		<button type="button" 
+	                                      		class="btn btn-primary1 btn-user btn-block" value="카카오로그인" onclick="location.href='/kakaoLoginProc.do'" style="background-color:#F8DF00;  
+	                                      		 padding-top: 3px; padding-bottom: 3px;">
+	                                      		<img src="/resources/image/kakao.png" style="width:40px">
+	                                  		     카카오로그인     	
+	                                       </button> 
+	                                    </form>
                                     <hr> 	
                                     <div class="text-center">
                                         <a class="small" href="/user/findPassword.do">비밀번호 찾기</a>
@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-<!-- 유저 아이디 확인용 아작스 스크립트 영역-->
+<!--################################################################################# 유저 아이디 확인용 아작스 스크립트 영역 #####################################################################-->
    <script type="text/javascript">
    //--------------------유저 가입 여부 확인 AJAX 처리 -----------------------------------------
    $('#empno').blur(function () // => 제이쿼리 선택이 해제 되면 함수가 동작
@@ -89,6 +89,22 @@
          }
       })
    });
-     </script>
+   //--------------------------------------- null 체크 -------------------------------------------
+  	function doLoginCheck(formTag)
+   {
+	   if(empno.value == "")
+	   {
+		   alert("아이디를 입력해주세요.");
+		   formTag.empno.focus();
+		   return false;
+	   }
+	   if(pwd.value == "")
+	   {
+		   alert("비밀번호를 입력해주세요.");
+		   formTag.pwd.focus();
+		   return false;
+	   }
+   }
+     </script>   
 </body>
 </html>

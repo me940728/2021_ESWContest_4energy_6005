@@ -28,9 +28,8 @@ import org.json.simple.JSONObject;
 
 public class KakaoClass implements AutoCloseable{
 	//-------------------------------------------------------리소스 선언부-------------------------------------------------
-	// String Redirect_URI = "http://www.detectiongas.com/kakaoLogin.do"; // 실제 서버에 올릴 때는 이 주소 사용
-	//private final String Redirect_URI = "http://localhost:8080/kakaoLogin.do"; // 로컬 테스트용
-	//private final String RESTAPI_KEY = "27c978dd34db046ade506b3d1fb46013"; // 키
+	String Redirect_URI = "{ 카카오에 등록된 리다이렉트 주소 }"; // 실제 서버에 올릴 때는 이 주소 사용
+	private final String RESTAPI_KEY = "{ key }"; // 키
 	private final String SEND_TALK_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send"; // 톡 보내는 URL
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	private String accessToken = ""; // 메시지 보내기 위한 토큰을 저장하는 곳 로그인마다 갱신...
