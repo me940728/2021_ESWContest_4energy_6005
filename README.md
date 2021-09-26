@@ -1,4 +1,5 @@
-# 2021년 임베디드 소프트웨어 경진대회 (The World Embeded Software Contest 2021)
+# 2021년 임베디드 소프트웨어 경진대회
+# (The World Embeded Software Contest 2021)
 
 1. 프로젝트 기본 정보
     - 부문 : 제 19회 임베디드 SW경진대회[4차 산업 기반 에너지]
